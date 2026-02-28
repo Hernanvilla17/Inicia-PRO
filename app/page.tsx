@@ -1,65 +1,119 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { NAV_ITEMS } from "@/lib/constants";
+import { Lock, ArrowRight, Sparkles } from "lucide-react";
+
+const container = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: { staggerChildren: 0.08 },
+  },
+};
+
+const cardVariant = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0 },
+};
+
+export default function HomePage() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="px-6 py-10 lg:px-12 lg:py-14">
+      {/* Hero */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="mb-12"
+      >
+        <div className="mb-4 flex items-center gap-2">
+          <Sparkles className="h-5 w-5 text-brand-amber" />
+          <span className="text-sm font-medium text-brand-amber">
+            Plataforma Premium
+          </span>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+        <h1 className="font-heading text-3xl font-extrabold tracking-tight text-white lg:text-4xl">
+          Bienvenido a{" "}
+          <span className="text-brand-blue">InicIA Pro</span>
+        </h1>
+        <p className="mt-3 max-w-xl text-base text-[#94A3B8] lg:text-lg">
+          Tu centro de herramientas de IA. Mejora tus prompts, accede a
+          recursos profesionales y domina la inteligencia artificial.
+        </p>
+      </motion.div>
+
+      {/* Feature Cards Grid */}
+      <motion.div
+        variants={container}
+        initial="hidden"
+        animate="show"
+        className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3"
+      >
+        {NAV_ITEMS.map((navItem) => {
+          const Icon = navItem.icon;
+          const isActive = !navItem.comingSoon;
+
+          return (
+            <motion.div key={navItem.href} variants={cardVariant}>
+              <Link
+                href={navItem.href}
+                className={`group relative block rounded-[14px] border p-6 transition-all duration-300 ${
+                  isActive
+                    ? "border-brand-blue/20 bg-dark-card hover:border-brand-blue/40 hover:bg-dark-card-hover hover:shadow-[0_0_30px_rgba(59,130,246,0.06)]"
+                    : "border-white/[0.04] bg-dark-card hover:border-white/[0.08] hover:bg-dark-card-hover"
+                }`}
+              >
+                {isActive && (
+                  <div className="absolute right-4 top-4">
+                    <span className="inline-flex items-center rounded-full bg-brand-blue/10 px-2.5 py-1 text-[11px] font-semibold text-brand-blue">
+                      Disponible
+                    </span>
+                  </div>
+                )}
+
+                {navItem.comingSoon && (
+                  <div className="absolute right-4 top-4">
+                    <span className="inline-flex items-center gap-1 rounded-full bg-white/[0.04] px-2.5 py-1 text-[11px] font-medium text-[#64748B]">
+                      <Lock className="h-3 w-3" />
+                      Próximamente
+                    </span>
+                  </div>
+                )}
+
+                <div
+                  className={`mb-4 flex h-11 w-11 items-center justify-center rounded-xl ${
+                    isActive
+                      ? "bg-brand-blue/10 text-brand-blue"
+                      : "bg-white/[0.04] text-[#64748B]"
+                  }`}
+                >
+                  <Icon className="h-5 w-5" />
+                </div>
+
+                <h3
+                  className={`mb-1.5 font-heading text-base font-bold ${
+                    isActive ? "text-white" : "text-[#CBD5E1]"
+                  }`}
+                >
+                  {navItem.label}
+                </h3>
+                <p className="text-sm leading-relaxed text-[#64748B]">
+                  {navItem.description}
+                </p>
+
+                {isActive && (
+                  <div className="mt-4 flex items-center gap-1.5 text-sm font-medium text-brand-blue opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                    Abrir herramienta
+                    <ArrowRight className="h-4 w-4" />
+                  </div>
+                )}
+              </Link>
+            </motion.div>
+          );
+        })}
+      </motion.div>
     </div>
   );
 }
