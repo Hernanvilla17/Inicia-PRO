@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   description:
     "Plataforma premium de herramientas de IA de Inicia con IA. Mejora tus prompts, accede a guías y domina la inteligencia artificial.",
   icons: {
-    icon: "/favicon.ico",
+    icon: "/favicon.svg",
   },
 };
 
