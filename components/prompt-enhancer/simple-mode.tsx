@@ -11,7 +11,7 @@ import {
 } from "./file-attachment";
 
 interface SimpleModeProps {
-  onResult: (result: string) => void;
+  onResult: (result: string, originalPrompt?: string) => void;
   isLoading: boolean;
   setIsLoading: (loading: boolean) => void;
   initialPrompt?: string | null;
@@ -95,7 +95,7 @@ El usuario te dará un prompt original. Mejóralo y restructúralo usando las se
 
       const data = await response.json();
       if (data.content && data.content[0]) {
-        onResult(data.content[0].text);
+        onResult(data.content[0].text, prompt);
         try {
           fetch(
             "https://n8n-n8n.rh89ob.easypanel.host/webhook/430941d5-790b-4526-96a0-4977cd325449",

@@ -2,11 +2,12 @@
 
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
-import { Copy, Check, RotateCcw, Sparkles } from "lucide-react";
+import { Copy, Check, RotateCcw, Sparkles, MessageSquare } from "lucide-react";
 import { INICIA_TAG_COLORS, INICIA_SECTION_SUBTITLES } from "@/lib/prompts";
 
 interface ResultViewProps {
   result: string;
+  originalPrompt?: string | null;
   onEdit: (text: string) => void;
   onReset: () => void;
 }
@@ -42,7 +43,7 @@ function parseResult(text: string) {
   return sections;
 }
 
-export function ResultView({ result, onEdit, onReset }: ResultViewProps) {
+export function ResultView({ result, originalPrompt, onEdit, onReset }: ResultViewProps) {
   const [copied, setCopied] = useState(false);
 
   const sections = useMemo(() => parseResult(result), [result]);
@@ -104,6 +105,25 @@ export function ResultView({ result, onEdit, onReset }: ResultViewProps) {
       animate={{ opacity: 1, y: 0 }}
       className="space-y-4"
     >
+      {/* Original prompt */}
+      {originalPrompt && (
+        <div className="space-y-2">
+          <div className="flex items-center gap-2">
+            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-white/[0.06]">
+              <MessageSquare className="h-3.5 w-3.5 text-[#94A3B8]" />
+            </div>
+            <span className="text-sm font-medium text-[#94A3B8]">
+              Tu prompt original
+            </span>
+          </div>
+          <div className="rounded-xl border border-white/[0.04] bg-dark-deep/40 p-4">
+            <p className="text-sm leading-relaxed text-[#64748B] italic">
+              {originalPrompt}
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Success header */}
       <div className="flex items-center gap-2">
         <div className="flex h-6 w-6 items-center justify-center rounded-full bg-green-500/10">

@@ -11,7 +11,7 @@ import {
 } from "./file-attachment";
 
 interface GuidedModeProps {
-  onResult: (result: string) => void;
+  onResult: (result: string, originalPrompt?: string) => void;
   isLoading: boolean;
   setIsLoading: (loading: boolean) => void;
 }
@@ -158,7 +158,7 @@ Te han dado información estructurada sobre lo que el usuario quiere lograr. Cre
       });
       const data = await response.json();
       if (data.content?.[0]) {
-        onResult(data.content[0].text);
+        onResult(data.content[0].text, answers[0]);
         // Fire-and-forget webhook tracking
         try {
           fetch("https://n8n-n8n.rh89ob.easypanel.host/webhook/430941d5-790b-4526-96a0-4977cd325449", {

@@ -21,6 +21,7 @@ const STEPS = [
 export function PromptEnhancer() {
   const [mode, setMode] = useState<Mode>("simple");
   const [result, setResult] = useState<string | null>(null);
+  const [originalPrompt, setOriginalPrompt] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [editingPrompt, setEditingPrompt] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -138,14 +139,17 @@ export function PromptEnhancer() {
                   >
                     <ResultView
                       result={result}
+                      originalPrompt={originalPrompt}
                       onEdit={(text) => {
                         setEditingPrompt(text);
                         setResult(null);
+                        setOriginalPrompt(null);
                         setMode("simple");
                       }}
                       onReset={() => {
                         setEditingPrompt(null);
                         setResult(null);
+                        setOriginalPrompt(null);
                       }}
                     />
                   </motion.div>
@@ -157,7 +161,10 @@ export function PromptEnhancer() {
                     exit={{ opacity: 0 }}
                   >
                     <SimpleMode
-                      onResult={(text) => setResult(text)}
+                      onResult={(text, original) => {
+                        setOriginalPrompt(original || null);
+                        setResult(text);
+                      }}
                       isLoading={isLoading}
                       setIsLoading={setIsLoading}
                       initialPrompt={editingPrompt}
@@ -172,7 +179,10 @@ export function PromptEnhancer() {
                     exit={{ opacity: 0 }}
                   >
                     <GuidedMode
-                      onResult={(text) => setResult(text)}
+                      onResult={(text, original) => {
+                        setOriginalPrompt(original || null);
+                        setResult(text);
+                      }}
                       isLoading={isLoading}
                       setIsLoading={setIsLoading}
                     />
